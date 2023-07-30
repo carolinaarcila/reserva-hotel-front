@@ -1,5 +1,11 @@
-<ul>
-    <li><a routerLink="/hotels">Hoteles</a></li>
-    <li><a routerLink="/rooms">Habitaciones</a></li>
-    
-</ul>
+
+<mat-drawer-container class="nav-container">
+    <mat-drawer mode="side" opened class="navbar">
+        
+        <app-menu></app-menu>
+
+    </mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+  </mat-drawer-container>

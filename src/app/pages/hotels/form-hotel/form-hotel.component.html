@@ -1,0 +1,77 @@
+<h1>Agregar Hotel</h1>
+<div class="form-container">
+  <form class="form-section" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Ingresar nombre de hotel</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Nombre de hotel"
+        formControlName="name"
+      />
+    </mat-form-field>
+
+    <mat-form-field hintLabel="Max 10 characters">
+      <mat-label>Ingresar numero de telefono</mat-label>
+      <input
+        matInput
+        #input
+        maxlength="10"
+        placeholder="Telefono"
+        formControlName="phoneNumber"
+      />
+      <mat-hint align="end">{{ input.value.length }}/10</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ingresar direccion del hotel</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Direccion"
+        formControlName="address"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Ingresar email del hotel</mat-label>
+      <input
+        type="email"
+        matInput
+        #input
+        placeholder="Email"
+        formControlName="email"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Cantidad de habitaciones</mat-label>
+      <input
+        type="number"
+        matInput
+        #input
+        placeholder="Cantidad de habitaciones"
+        formControlName="totalRooms"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Capacidad de hospedaje</mat-label>
+      <input
+        type="number"
+        matInput
+        #input
+        placeholder="Capacidad de hospedaje"
+        formControlName="reserveCapacity"
+      />
+    </mat-form-field>
+  </form>
+</div>
+<section class="button-section">
+  <button mat-stroked-button color="primary" routerLink="/hotels">
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    Guardar
+  </button>
+</section>
