@@ -41,12 +41,14 @@ export class HotelsComponent implements OnInit {
     this.hotelsService.deleteHotel(id).subscribe((response) => {
       this.getAllHotels();
     });
-        Swal.fire(
-          '¡Eliminado!',
-          'El hotel ha sido eliminado.',
-          'success'
-        )}
-    });
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'El hotel ha sido eliminado',
+      showConfirmButton: false,
+      timer: 1500
+    })
+   }});
   }
 
   public setHotelById(id: number): void {

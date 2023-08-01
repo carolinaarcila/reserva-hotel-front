@@ -44,11 +44,13 @@ export class FormHotelComponent implements OnInit {
   }
   createHotel(): void {
     this.hotelsService.createHotel(this.form.value).subscribe((response) => {
-      Swal.fire(
-        '¡Creado!',
-        'El hotel ha sido creado.',
-        'success'
-      );
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'El hotel ha sido creado',
+        showConfirmButton: false,
+        timer: 1500
+      })
       this.router.navigateByUrl('/hotels');
     });
   }
@@ -71,11 +73,13 @@ export class FormHotelComponent implements OnInit {
   updateHotel(): void {
     const hotelUpdated: Hotel = { "id": this.hotelId, ...this.form.value };
     this.hotelsService.updateHotel(this.hotelId, hotelUpdated).subscribe((response) => {
-      Swal.fire(
-        '¡Actualizado!',
-        'El hotel ha sido actualizado.',
-        'success'
-      );
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'El hotel ha sido actualizado',
+        showConfirmButton: false,
+        timer: 1500
+      })
       this.router.navigateByUrl('/hotels');
     });
     

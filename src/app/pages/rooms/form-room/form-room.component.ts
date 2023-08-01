@@ -49,11 +49,13 @@ export class FormRoomComponent implements OnInit {
 
   createRoom(): void {
     this.roomsService.createRoom(this.form.value).subscribe((response) => {
-      Swal.fire(
-        '¡Creado!',
-        'La habitacion ha sido creada.',
-        'success'
-      );
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'La habitación ha sido creada',
+        showConfirmButton: false,
+        timer: 1500
+      })
       this.router.navigateByUrl('/rooms');
     });
   }
@@ -78,11 +80,13 @@ export class FormRoomComponent implements OnInit {
   updateRoom(): void {
     const roomUpdated: Rooms = { "id": this.id, ...this.form.value };
     this.roomsService.updateRoom(this.id, roomUpdated).subscribe((response) => {
-      Swal.fire(
-        '¡Actualizado!',
-        'La habitación ha sido actualizada.',
-        'success'
-      );
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'La habitación ha sido actualizada',
+        showConfirmButton: false,
+        timer: 1500
+      })
       this.router.navigateByUrl('/rooms');
     });
     

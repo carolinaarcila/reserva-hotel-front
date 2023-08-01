@@ -48,12 +48,14 @@ export class RoomsComponent implements OnInit {
       (response) => {
         this.getAllRooms();
     });
-        Swal.fire(
-          '¡Eliminado!',
-          'La habitación ha sido eliminada.',
-          'success'
-        )}
-    });
+    Swal.fire({
+      position: 'center',
+      icon: 'success',
+      title: 'La habitación ha sido eliminada',
+      showConfirmButton: false,
+      timer: 1500
+    })
+   }});
   }
 
  public SetRoomById(id: number): void {
