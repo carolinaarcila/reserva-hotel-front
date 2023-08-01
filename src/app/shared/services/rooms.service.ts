@@ -9,15 +9,35 @@ import { ResponseDelete } from '../interfaces/hotels/response.delete';
   providedIn: 'root'
 })
 export class RoomsService {
-  constructor(private httpClient: HttpClient ) { }
+  
+ 
 
-  apiUrl: string = environment.apiUrl;
+  private apiUrl: string = environment.apiUrl;
+
+  constructor(private HttpClient: HttpClient ) { }
+
+  public createRoom(room: Rooms): Observable<Rooms> {
+    return this.HttpClient.post<Rooms>(`${this.apiUrl}/rooms`, room);
+  }
+
+  public getRoomById(id: number): Observable<Rooms> {
+    return this.HttpClient.get<Rooms>(`${this.apiUrl}/rooms/${id}`);
+  }
 
   public getAllRooms(): Observable<Rooms[]> {
-    return this.httpClient.get<Rooms[]>(`${this.apiUrl}/room`);
+    return this.HttpClient.get<Rooms[]>(`${this.apiUrl}/rooms`);
   }
 
+  
+
   public deleteRoom(id: number): Observable<ResponseDelete> {
-    return this.httpClient.delete<ResponseDelete>(`${this.apiUrl}/room/${id}`);
+    return this.HttpClient.delete<ResponseDelete>(`${this.apiUrl}/rooms/${id}`);
   }
+
+ 
+
+  public updateRoom(id: number, room: Rooms): Observable<Rooms> {
+    return  this.HttpClient.put<Rooms>(`${this.apiUrl}/rooms/${id}`, room);
+   }
+
 }

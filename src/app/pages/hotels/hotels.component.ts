@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Hotel } from 'src/app/shared/interfaces/hotels/hotels.interfaces';
 import { HotelsService } from 'src/app/shared/services/hotels.service';
 import { Router } from '@angular/router';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-hotels',
@@ -17,6 +19,8 @@ export class HotelsComponent implements OnInit {
     this.getAllHotels();
   }
 
+
+
   public getAllHotels(): void {
     this.hotelsService.getAllHotels().subscribe(
       (response) => {
@@ -25,8 +29,23 @@ export class HotelsComponent implements OnInit {
   }
   
   public deleteHotel(id: number): void {
+    Swal.fire({
+      title: '¿Está seguro de eliminar el hotel?',
+      text: 'No puedes revertir esta acción',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
     this.hotelsService.deleteHotel(id).subscribe((response) => {
       this.getAllHotels();
+    });
+        Swal.fire(
+          '¡Eliminado!',
+          'El hotel ha sido eliminado.',
+          'success'
+        )}
     });
   }
 
@@ -34,4 +53,6 @@ export class HotelsComponent implements OnInit {
     this.router.navigateByUrl(`hotels/form?id=${id}`);
   
   }
+
+
 }

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Hotel } from 'src/app/shared/interfaces/hotels/hotels.interfaces';
 import { HotelsService } from 'src/app/shared/services/hotels.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-hotel',
@@ -43,6 +44,11 @@ export class FormHotelComponent implements OnInit {
   }
   createHotel(): void {
     this.hotelsService.createHotel(this.form.value).subscribe((response) => {
+      Swal.fire(
+        '¡Creado!',
+        'El hotel ha sido creado.',
+        'success'
+      );
       this.router.navigateByUrl('/hotels');
     });
   }
@@ -65,8 +71,13 @@ export class FormHotelComponent implements OnInit {
   updateHotel(): void {
     const hotelUpdated: Hotel = { "id": this.hotelId, ...this.form.value };
     this.hotelsService.updateHotel(this.hotelId, hotelUpdated).subscribe((response) => {
-    console.log(response);
+      Swal.fire(
+        '¡Actualizado!',
+        'El hotel ha sido actualizado.',
+        'success'
+      );
+      this.router.navigateByUrl('/hotels');
     });
-    this.router.navigateByUrl('/hotels');
+    
   }
 }

@@ -9,6 +9,7 @@ import { environment } from 'src/environments/environment';
   providedIn: 'root'
 })
 export class HotelsService {
+  
 
   private apiUrl: string = environment.apiUrl;
 

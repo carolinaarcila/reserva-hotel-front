@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { Rooms } from 'src/app/shared/interfaces/rooms/rooms.interface';
 import { RoomsService } from 'src/app/shared/services/rooms.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-rooms',
@@ -19,26 +21,44 @@ export class RoomsComponent implements OnInit {
    'hotelId',
    'actions'];
 
-  constructor(private roomsService: RoomsService) { }
+  constructor(private roomsService: RoomsService, private router: Router ) { }
 
   ngOnInit(): void {
     this.getAllRooms();
   }
 
-  getAllRooms(): void {
+  public getAllRooms(): void {
     this.roomsService.getAllRooms().subscribe(
-      (reponse) => {
-        this.rooms = reponse;
+      (response) => {
+        this.rooms = response;
     });
   }    
 
-  deleteRoom(id: number): void {
+ public deleteRoom(id: number): void {
+    Swal.fire({
+      title: '¿Está seguro de eliminar la habitación?',
+      text: 'No puedes revertir esta acción',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si, eliminar',
+      cancelButtonText: 'No, cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
     this.roomsService.deleteRoom(id).subscribe(
       (response) => {
         this.getAllRooms();
     });
+        Swal.fire(
+          '¡Eliminado!',
+          'La habitación ha sido eliminada.',
+          'success'
+        )}
+    });
   }
 
+ public SetRoomById(id: number): void {
+  this.router.navigateByUrl(`rooms/form?id=${id}`);
+ }
 
 
 }

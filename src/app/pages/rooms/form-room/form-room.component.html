@@ -1,16 +1,71 @@
-<div class="example-container">
-    <mat-form-field hintLabel="Max 10 characters">
-      <mat-label>Enter some input</mat-label>
-      <input matInput #input maxlength="10" placeholder="Ex. Nougat">
-      <mat-hint align="end">{{input.value.length}}/10</mat-hint>
-    </mat-form-field>
-  
+<h1>Agregar habitaciones</h1>
+<div class="form-container">
+  <form class="form-section" [formGroup]="form" (ngSubmit)="onSubmit()">
     <mat-form-field>
-      <mat-label>Select me</mat-label>
-      <mat-select>
-        <mat-option value="option">Option</mat-option>
-      </mat-select>
-      <mat-hint align="end">Here's the dropdown arrow ^</mat-hint>
+      <mat-label>Numero de habitacion</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Numero de habitacion"
+        formControlName="roomNumber"
+      />
     </mat-form-field>
-  </div>
-  
+
+    <mat-form-field>
+      <mat-label>Precio</mat-label>
+      <input
+        type="number"
+        matInput
+        #input
+        placeholder="Precio"
+        formControlName="price"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tipo de habitacion</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Tipo de habitacion"
+        formControlName="roomType"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Cantidad de camas</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Cantidad de camas"
+        formControlName="beadsNumber"
+      />
+    </mat-form-field>
+
+    <!-- <mat-form-field>
+      <mat-label>Id del hotel</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Id del hotel"
+        formControlName="hotelId"
+      />
+    </mat-form-field> -->
+
+    <mat-form-field>
+      <mat-label>Seleccione un hotel</mat-label>
+      <mat-select disableRipple formControlName="hotelId">
+        <mat-option *ngFor="let hotel of hotels" [value]="hotel.id">{{
+          hotel.name
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
+<section class="button-section">
+  <button mat-stroked-button color="primary" routerLink="/rooms">
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    Guardar
+  </button>
+</section>

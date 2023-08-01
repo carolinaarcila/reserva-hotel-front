@@ -1,10 +1,98 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Hotel } from 'src/app/shared/interfaces/hotels/hotels.interfaces';
+import { Rooms } from 'src/app/shared/interfaces/rooms/rooms.interface';
+import { HotelsService } from 'src/app/shared/services/hotels.service';
+import { RoomsService } from 'src/app/shared/services/rooms.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-room',
   templateUrl: './form-room.component.html',
   styleUrls: ['./form-room.component.css']
 })
-export class FormRoomComponent {
+export class FormRoomComponent implements OnInit {
+
+  form!: FormGroup;
+  id!: number;
+  hotels!: Hotel[];
+
+  constructor(private readonly formBuilder: FormBuilder, private roomsService: RoomsService,
+    private router: Router, private activatedRouter: ActivatedRoute, private hotelsService: HotelsService){
+      this.buildForm();
+      this.getParamUrl();
+    }
+  
+
+  ngOnInit(): void {
+    this.getAllHotels();
+    this.buildForm();
+    if(this.id){
+      this.getParamUrl();
+    }
+  }
+
+  onSubmit(): void {
+   this.id ? this.updateRoom() : this.createRoom();
+  }
+
+  private buildForm(): void {
+    this.form = this.formBuilder.group({
+      roomNumber: ['', Validators.required],
+      price: ['', Validators.required],
+      roomType: ['', Validators.required],
+      beadsNumber: ['', Validators.required],
+      hotelId: ['', Validators.required],
+    });
+  }
+
+  createRoom(): void {
+    this.roomsService.createRoom(this.form.value).subscribe((response) => {
+      Swal.fire(
+        '¡Creado!',
+        'La habitacion ha sido creada.',
+        'success'
+      );
+      this.router.navigateByUrl('/rooms');
+    });
+  }
+
+  getParamUrl(): void {
+    this.activatedRouter.queryParams.subscribe((params) => {
+      if (Object.values(params).length === 0) return;
+
+      const { id } = params;
+      this.id = parseInt(id, 10);
+      this.getRoomById(this.id);
+      
+    });
+  }
+
+  getRoomById(id: number): void {
+    this.roomsService.getRoomById(id).subscribe((response) => {
+      this.form.patchValue(response);
+    });
+  }
+
+  updateRoom(): void {
+    const roomUpdated: Rooms = { "id": this.id, ...this.form.value };
+    this.roomsService.updateRoom(this.id, roomUpdated).subscribe((response) => {
+      Swal.fire(
+        '¡Actualizado!',
+        'La habitación ha sido actualizada.',
+        'success'
+      );
+      this.router.navigateByUrl('/rooms');
+    });
+    
+  }
+
+  public getAllHotels(): void {
+    this.hotelsService.getAllHotels().subscribe(
+      (response) => {
+        this.hotels = response;
+      });
+  }
 
 }
