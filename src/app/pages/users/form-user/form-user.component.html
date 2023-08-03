@@ -1,0 +1,67 @@
+<h1>{{ title }}</h1>
+<div class="form-container">
+  <form class="form-section" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Seleccione un tipo de documento</mat-label>
+      <mat-select disableRipple formControlName="documentType">
+        <mat-option *ngFor="let type of documentTypes" [value]="type.value">{{
+          type.viewValue
+        }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Número de documento</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Número de documento"
+        formControlName="documentNumber"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Nombre</mat-label>
+      <input
+        matInput
+        #input
+        placeholder="Nombre de usuario"
+        formControlName="name"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Telefono</mat-label>
+      <input
+        type="number"
+        matInput
+        #input
+        placeholder="Numero de telefono"
+        formControlName="phoneNumber"
+      />
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Email</mat-label>
+
+      <input matInput #input placeholder="email" formControlName="email" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Contraseña</mat-label>
+      <input
+        type="password"
+        matInput
+        #input
+        placeholder="password"
+        formControlName="password"
+      />
+    </mat-form-field>
+  </form>
+</div>
+<section class="button-section">
+  <button mat-stroked-button color="primary" routerLink="/users">
+    Cancelar
+  </button>
+  <button mat-raised-button color="primary" (click)="onSubmit()">
+    Guardar
+  </button>
+</section>

@@ -18,9 +18,11 @@ export class FormRoomComponent implements OnInit {
   id!: number;
   hotels!: Hotel[];
   title!: string;
+  typeRooms: string[] = [];
 
   constructor(private readonly formBuilder: FormBuilder, private roomsService: RoomsService,
     private router: Router, private activatedRouter: ActivatedRoute, private hotelsService: HotelsService){
+      this.typeRooms = ['Sencilla', 'Doble', 'Triple', 'Suite'];
       this.buildForm();
       this.getParamUrl();
     }

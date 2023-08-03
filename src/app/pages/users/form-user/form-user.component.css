@@ -1,0 +1,23 @@
+.form-container {
+  display: flex;
+  align-items: center;
+  align-content: center;
+  justify-content: center;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  min-width: 50%;
+}
+
+h1 {
+  text-align: center;
+  margin: 2em;
+}
+
+.button-section {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}

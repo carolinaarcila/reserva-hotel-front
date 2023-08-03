@@ -10,13 +10,8 @@ import { HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './shared/modules/material/material.module';
 import { MenuComponent } from './components/menu/menu.component';
 
-
 @NgModule({
-  declarations: [
-    AppComponent,
-    NavbarComponent,
-    MenuComponent
-  ],
+  declarations: [AppComponent, NavbarComponent, MenuComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -24,8 +19,8 @@ import { MenuComponent } from './components/menu/menu.component';
     HttpClientModule,
     MaterialModule,
   ],
-  
+
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

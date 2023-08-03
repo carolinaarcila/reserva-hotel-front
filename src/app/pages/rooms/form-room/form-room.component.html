@@ -21,14 +21,14 @@
         formControlName="price"
       />
     </mat-form-field>
+
     <mat-form-field>
-      <mat-label>Tipo de habitacion</mat-label>
-      <input
-        matInput
-        #input
-        placeholder="Tipo de habitacion"
-        formControlName="roomType"
-      />
+      <mat-label>Seleccione tipo de habitación</mat-label>
+      <mat-select disableRipple formControlName="roomType">
+        <mat-option *ngFor="let type of typeRooms" [value]="type">{{
+          type
+        }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field>
@@ -40,16 +40,6 @@
         formControlName="beadsNumber"
       />
     </mat-form-field>
-
-    <!-- <mat-form-field>
-      <mat-label>Id del hotel</mat-label>
-      <input
-        matInput
-        #input
-        placeholder="Id del hotel"
-        formControlName="hotelId"
-      />
-    </mat-form-field> -->
 
     <mat-form-field>
       <mat-label>Seleccione un hotel</mat-label>

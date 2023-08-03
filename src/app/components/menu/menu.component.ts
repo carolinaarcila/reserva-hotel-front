@@ -16,6 +16,11 @@ export class MenuComponent {
     {
       name: 'Habitaciones',
       path: '/rooms'
+    },
+
+    {
+      name: 'Usuarios',
+      path: '/users'
     }
 
   ];
