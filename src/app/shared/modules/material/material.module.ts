@@ -10,6 +10,7 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatInputModule} from '@angular/material/input';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
     MatSelectModule,
     MatInputModule,
     ReactiveFormsModule,
-    SweetAlert2Module
+    SweetAlert2Module,
+    MatPaginatorModule
   ]
 })
 export class MaterialModule { }

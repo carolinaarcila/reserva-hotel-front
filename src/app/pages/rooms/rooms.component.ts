@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { Rooms } from 'src/app/shared/interfaces/rooms/rooms.interface';
 import { RoomsService } from 'src/app/shared/services/rooms.service';
 import Swal from 'sweetalert2';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-rooms',
@@ -10,8 +12,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./rooms.component.css']
 })
 export class RoomsComponent implements OnInit {
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  rooms: Rooms[] = [];
+  rooms!: MatTableDataSource<Rooms> ;
 
   displayedColumns: string[] = [
    'roomNumber', 
@@ -30,9 +33,12 @@ export class RoomsComponent implements OnInit {
   public getAllRooms(): void {
     this.roomsService.getAllRooms().subscribe(
       (response) => {
-        this.rooms = response;
+        this.rooms = new MatTableDataSource<Rooms>(response);
+        this.rooms.paginator = this.paginator;
     });
-  }    
+  }
+  
+  
 
  public deleteRoom(id: number): void {
     Swal.fire({

@@ -17,6 +17,7 @@ export class FormRoomComponent implements OnInit {
   form!: FormGroup;
   id!: number;
   hotels!: Hotel[];
+  title!: string;
 
   constructor(private readonly formBuilder: FormBuilder, private roomsService: RoomsService,
     private router: Router, private activatedRouter: ActivatedRoute, private hotelsService: HotelsService){
@@ -28,9 +29,8 @@ export class FormRoomComponent implements OnInit {
   ngOnInit(): void {
     this.getAllHotels();
     this.buildForm();
-    if(this.id){
-      this.getParamUrl();
-    }
+    this.getParamUrl();
+    this.id ? this.title = 'Editar Habitación' : this.title = 'Crear Habitación';
   }
 
   onSubmit(): void {
