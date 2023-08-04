@@ -1,13 +1,13 @@
 export interface User {
-    id:          ID;
-    name:        string;
-    phoneNumber: string;
-    email:       string;
-    password:    string;
-    rolId:       number;
+  id: UserID;
+  name: string;
+  phoneNumber: string;
+  email: string;
+  password: string;
+  rolId: number;
 }
 
-interface ID {
-    documentType:   string;
-    documentNumber: number;
+export interface UserID {
+  documentType: string;
+  documentNumber: number;
 }

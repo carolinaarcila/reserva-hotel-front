@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { User } from 'src/app/shared/interfaces/users/users.interface';
+import { User, UserID } from 'src/app/shared/interfaces/users/users.interface';
 import { UsersService } from 'src/app/shared/services/users.service';
 import Swal from 'sweetalert2';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-users',
@@ -10,7 +12,9 @@ import Swal from 'sweetalert2';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent implements OnInit {
-  users!: User[];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  users!: MatTableDataSource<User>;
 
   displayedColumns: string[] = [
     'name',
@@ -27,21 +31,12 @@ export class UsersComponent implements OnInit {
 
   public getAllUsers(): void {
     this.usersService.getAllUsers().subscribe((response) => {
-      this.users = response;
+      this.users = new MatTableDataSource<User>(response);
+      this.users.paginator = this.paginator;
     });
   }
 
-  public setUserById(id: {
-    documentType: string;
-    documentNumber: number;
-  }): void {
-    const { documentType, documentNumber } = id;
-    this.router.navigateByUrl(
-      `/users/form?type=${documentType}&number=${documentNumber}`
-    );
-  }
-
-  public deleteUser(id: number): void {
+  public deleteUser(id: UserID): void {
     Swal.fire({
       title: '¿Está seguro de eliminar el usuario?',
       text: 'No puedes revertir esta acción',
@@ -63,5 +58,15 @@ export class UsersComponent implements OnInit {
         });
       }
     });
+  }
+
+  public setUserById(id: {
+    documentType: string;
+    documentNumber: number;
+  }): void {
+    const { documentType, documentNumber } = id;
+    this.router.navigateByUrl(
+      `/users/form?type=${documentType}&number=${documentNumber}`
+    );
   }
 }

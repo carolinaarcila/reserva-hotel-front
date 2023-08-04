@@ -10,33 +10,40 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-form-room',
   templateUrl: './form-room.component.html',
-  styleUrls: ['./form-room.component.css']
+  styleUrls: ['./form-room.component.css'],
 })
 export class FormRoomComponent implements OnInit {
-
   form!: FormGroup;
   id!: number;
   hotels!: Hotel[];
   title!: string;
   typeRooms: string[] = [];
 
-  constructor(private readonly formBuilder: FormBuilder, private roomsService: RoomsService,
-    private router: Router, private activatedRouter: ActivatedRoute, private hotelsService: HotelsService){
-      this.typeRooms = ['Sencilla', 'Doble', 'Triple', 'Suite'];
-      this.buildForm();
-      this.getParamUrl();
-    }
-  
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private roomsService: RoomsService,
+    private router: Router,
+    private activatedRouter: ActivatedRoute,
+    private hotelsService: HotelsService
+  ) {
+    this.typeRooms = ['Sencilla', 'Doble', 'Triple', 'Suite'];
+    this.buildForm();
+    this.getParamUrl();
+  }
 
   ngOnInit(): void {
     this.getAllHotels();
     this.buildForm();
     this.getParamUrl();
-    this.id ? this.title = 'Editar Habitación' : this.title = 'Crear Habitación';
+    this.id
+      ? (this.title = 'Editar Habitación')
+      : (this.title = 'Crear Habitación');
   }
 
   onSubmit(): void {
-   this.id ? this.updateRoom() : this.createRoom();
+    this.form.markAllAsTouched();
+    if (this.form.invalid) return;
+    this.id ? this.updateRoom() : this.createRoom();
   }
 
   private buildForm(): void {
@@ -56,8 +63,8 @@ export class FormRoomComponent implements OnInit {
         icon: 'success',
         title: 'La habitación ha sido creada',
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
       this.router.navigateByUrl('/rooms');
     });
   }
@@ -69,7 +76,6 @@ export class FormRoomComponent implements OnInit {
       const { id } = params;
       this.id = parseInt(id, 10);
       this.getRoomById(this.id);
-      
     });
   }
 
@@ -80,25 +86,22 @@ export class FormRoomComponent implements OnInit {
   }
 
   updateRoom(): void {
-    const roomUpdated: Rooms = { "id": this.id, ...this.form.value };
+    const roomUpdated: Rooms = { id: this.id, ...this.form.value };
     this.roomsService.updateRoom(this.id, roomUpdated).subscribe((response) => {
       Swal.fire({
         position: 'center',
         icon: 'success',
         title: 'La habitación ha sido actualizada',
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
       this.router.navigateByUrl('/rooms');
     });
-    
   }
 
   public getAllHotels(): void {
-    this.hotelsService.getAllHotels().subscribe(
-      (response) => {
-        this.hotels = response;
-      });
+    this.hotelsService.getAllHotels().subscribe((response) => {
+      this.hotels = response;
+    });
   }
-
 }

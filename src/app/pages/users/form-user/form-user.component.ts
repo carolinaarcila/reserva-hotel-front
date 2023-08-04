@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { User, UserID } from 'src/app/shared/interfaces/users/users.interface';
 import { UsersService } from 'src/app/shared/services/users.service';
 import Swal from 'sweetalert2';
 
@@ -10,8 +11,10 @@ import Swal from 'sweetalert2';
   styleUrls: ['./form-user.component.css'],
 })
 export class FormUserComponent implements OnInit {
-  title = 'Crear usuario';
   form!: FormGroup;
+  title!: string;
+  id!: UserID;
+  hide: boolean = true;
   documentTypes = [
     { value: 'CC', viewValue: 'Cédula de ciudadanía' },
     { value: 'CE', viewValue: 'Cédula de extranjería' },
@@ -22,26 +25,41 @@ export class FormUserComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.createForm();
-  }
-
-  createForm(): void {
-    this.form = this.formBuilder.group({
-      documentType: [''],
-      documentNumber: [''],
-      name: [''],
-      phoneNumber: [''],
-      email: [''],
-      password: [''],
-    });
+    this.buildForm();
+    this.getParamUrl();
+    this.id ? (this.title = 'Editar usuario') : (this.title = 'Crear usuario');
   }
 
   onSubmit(): void {
-    this.createUser();
+    this.form.markAllAsTouched();
+    if (this.form.invalid) return;
+    this.id ? this.updateUser() : this.createUser();
+  }
+
+  private buildForm(): void {
+    this.form = this.formBuilder.group({
+      documentType: ['', Validators.required],
+      documentNumber: ['', Validators.required],
+      name: ['', Validators.required],
+      phoneNumber: ['', Validators.required],
+      email: ['', Validators.required],
+      password: ['', Validators.required],
+    });
+  }
+
+  getParamUrl(): void {
+    this.activatedRoute.queryParams.subscribe((params) => {
+      const { type, number } = params;
+      if (type && number) {
+        this.id = { documentType: type, documentNumber: number };
+        this.getUserById(this.id);
+      }
+    });
   }
 
   createUser(): void {
@@ -53,6 +71,37 @@ export class FormUserComponent implements OnInit {
         position: 'center',
         icon: 'success',
         title: 'El usuario ha sido creado',
+        showConfirmButton: false,
+        timer: 1500,
+      });
+      this.router.navigateByUrl('/users');
+    });
+  }
+
+  getUserById(id: UserID): void {
+    this.usersService
+      .getUserById(id.documentType, id.documentNumber)
+      .subscribe((response) => {
+        this.form.patchValue({
+          documentType: response.id.documentType,
+          documentNumber: response.id.documentNumber,
+          name: response.name,
+          phoneNumber: response.phoneNumber,
+          email: response.email,
+          password: null,
+        });
+      });
+  }
+
+  updateUser(): void {
+    const { documentType, documentNumber, ...userData } = this.form.value;
+    const id = { documentType, documentNumber };
+    const userUpdated = { id, ...userData };
+    this.usersService.updateUser(id, userUpdated).subscribe((response) => {
+      Swal.fire({
+        position: 'center',
+        icon: 'success',
+        title: 'El usuario ha sido actualizado',
         showConfirmButton: false,
         timer: 1500,
       });

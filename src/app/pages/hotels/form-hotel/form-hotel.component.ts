@@ -8,15 +8,19 @@ import Swal from 'sweetalert2';
 @Component({
   selector: 'app-form-hotel',
   templateUrl: './form-hotel.component.html',
-  styleUrls: ['./form-hotel.component.css']
+  styleUrls: ['./form-hotel.component.css'],
 })
 export class FormHotelComponent implements OnInit {
-
   form!: FormGroup;
   hotelId!: number;
   title!: string;
 
-  constructor(private readonly formBuilder: FormBuilder, private hotelsService: HotelsService, private router: Router, private activatedRouter: ActivatedRoute){
+  constructor(
+    private readonly formBuilder: FormBuilder,
+    private hotelsService: HotelsService,
+    private router: Router,
+    private activatedRouter: ActivatedRoute
+  ) {
     this.buildForm();
     this.getParamUrl();
   }
@@ -24,13 +28,13 @@ export class FormHotelComponent implements OnInit {
   ngOnInit(): void {
     this.buildForm();
     this.getParamUrl();
-    this.hotelId ? this.title = 'Editar Hotel' : this.title = 'Crear Hotel';
-
+    this.hotelId ? (this.title = 'Editar Hotel') : (this.title = 'Crear Hotel');
   }
 
   onSubmit(): void {
+    this.form.markAllAsTouched();
+    if (this.form.invalid) return;
     this.hotelId ? this.updateHotel() : this.createHotel();
-    
   }
 
   private buildForm(): void {
@@ -50,8 +54,8 @@ export class FormHotelComponent implements OnInit {
         icon: 'success',
         title: 'El hotel ha sido creado',
         showConfirmButton: false,
-        timer: 1500
-      })
+        timer: 1500,
+      });
       this.router.navigateByUrl('/hotels');
     });
   }
@@ -72,17 +76,18 @@ export class FormHotelComponent implements OnInit {
   }
 
   updateHotel(): void {
-    const hotelUpdated: Hotel = { "id": this.hotelId, ...this.form.value };
-    this.hotelsService.updateHotel(this.hotelId, hotelUpdated).subscribe((response) => {
-      Swal.fire({
-        position: 'center',
-        icon: 'success',
-        title: 'El hotel ha sido actualizado',
-        showConfirmButton: false,
-        timer: 1500
-      })
-      this.router.navigateByUrl('/hotels');
-    });
-    
+    const hotelUpdated: Hotel = { id: this.hotelId, ...this.form.value };
+    this.hotelsService
+      .updateHotel(this.hotelId, hotelUpdated)
+      .subscribe((response) => {
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'El hotel ha sido actualizado',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        this.router.navigateByUrl('/hotels');
+      });
   }
 }

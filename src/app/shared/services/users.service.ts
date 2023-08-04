@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
-import { User } from '../interfaces/users/users.interface';
+import { User, UserID } from '../interfaces/users/users.interface';
 import { ResponseDelete } from '../interfaces/hotels/response.delete';
 
 @Injectable({
@@ -13,15 +13,30 @@ export class UsersService {
 
   constructor(private httpClient: HttpClient) {}
 
+  createUser(user: User): Observable<User> {
+    return this.httpClient.post<User>(`${this.apiUrl}/users`, user);
+  }
+
+  getUserById(documentType: string, documentNumber: number): Observable<User> {
+    return this.httpClient.get<User>(
+      `${this.apiUrl}/users/${documentType}/${documentNumber}`
+    );
+  }
+
   getAllUsers(): Observable<User[]> {
     return this.httpClient.get<User[]>(`${this.apiUrl}/users`);
   }
 
-  deleteUser(id: number): Observable<ResponseDelete> {
-    return this.httpClient.delete<ResponseDelete>(`${this.apiUrl}/users/${id}`);
+  deleteUser(id: UserID): Observable<ResponseDelete> {
+    return this.httpClient.delete<ResponseDelete>(
+      `${this.apiUrl}/users/${id.documentType}/${id.documentNumber}`
+    );
   }
 
-  createUser(user: User): Observable<User> {
-    return this.httpClient.post<User>(`${this.apiUrl}/users`, user);
+  updateUser(id: UserID, user: User): Observable<User> {
+    return this.httpClient.put<User>(
+      `${this.apiUrl}/users/${id.documentType}/${id.documentNumber}`,
+      user
+    );
   }
 }

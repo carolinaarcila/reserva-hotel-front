@@ -48,12 +48,15 @@
     <mat-form-field>
       <mat-label>Contraseña</mat-label>
       <input
-        type="password"
+        [type]="hide ? 'password' : 'text'"
         matInput
         #input
         placeholder="password"
         formControlName="password"
       />
+      <mat-icon matSuffix (click)="hide = !hide">{{
+        hide ? "visibility_off" : "visibility"
+      }}</mat-icon>
     </mat-form-field>
   </form>
 </div>
