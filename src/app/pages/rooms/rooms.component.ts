@@ -9,64 +9,60 @@ import { MatTableDataSource } from '@angular/material/table';
 @Component({
   selector: 'app-rooms',
   templateUrl: './rooms.component.html',
-  styleUrls: ['./rooms.component.css']
+  styleUrls: ['./rooms.component.css'],
 })
 export class RoomsComponent implements OnInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
-  rooms!: MatTableDataSource<Rooms> ;
+  rooms!: MatTableDataSource<Rooms>;
 
   displayedColumns: string[] = [
-   'roomNumber', 
-   'price', 
-   'roomType', 
-   'beadsNumber',
-   'hotelId',
-   'actions'];
+    'roomNumber',
+    'price',
+    'roomType',
+    'beadsNumber',
+    'hotelName',
+    'actions',
+  ];
 
-  constructor(private roomsService: RoomsService, private router: Router ) { }
+  constructor(private roomsService: RoomsService, private router: Router) {}
 
   ngOnInit(): void {
     this.getAllRooms();
   }
 
   public getAllRooms(): void {
-    this.roomsService.getAllRooms().subscribe(
-      (response) => {
-        this.rooms = new MatTableDataSource<Rooms>(response);
-        this.rooms.paginator = this.paginator;
+    this.roomsService.getAllRooms().subscribe((response) => {
+      this.rooms = new MatTableDataSource<Rooms>(response);
+      this.rooms.paginator = this.paginator;
     });
   }
-  
-  
 
- public deleteRoom(id: number): void {
+  public deleteRoom(id: number): void {
     Swal.fire({
       title: '¿Está seguro de eliminar la habitación?',
       text: 'No puedes revertir esta acción',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Si, eliminar',
-      cancelButtonText: 'No, cancelar'
+      cancelButtonText: 'No, cancelar',
     }).then((result) => {
       if (result.isConfirmed) {
-    this.roomsService.deleteRoom(id).subscribe(
-      (response) => {
-        this.getAllRooms();
+        this.roomsService.deleteRoom(id).subscribe((response) => {
+          this.getAllRooms();
+        });
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'La habitación ha sido eliminada',
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      }
     });
-    Swal.fire({
-      position: 'center',
-      icon: 'success',
-      title: 'La habitación ha sido eliminada',
-      showConfirmButton: false,
-      timer: 1500
-    })
-   }});
   }
 
- public SetRoomById(id: number): void {
-  this.router.navigateByUrl(`rooms/form?id=${id}`);
- }
-
-
+  public SetRoomById(id: number): void {
+    this.router.navigateByUrl(`rooms/form?id=${id}`);
+  }
 }
